@@ -61,3 +61,5 @@ OS: Linux x64 5.15.0-100-generic
 > mv vscode-server-linux-x64 019f4d1419fbc8219a181fab7892ebccf7ee29a2
 > # ubuntu
 > mv vscode-server-linux-x64 863d2581ecda6849923a2118d93a088b0745d9d6
+
+> 重现尝试 ssh 连接即可
