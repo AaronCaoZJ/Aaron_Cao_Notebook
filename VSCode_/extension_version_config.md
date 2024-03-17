@@ -2,7 +2,7 @@
 
 ## 1. 下载 `.vsix`格式的安装包
 
-### VSCode 下载链接：
+### VSCode 插件安装包下载链接：
 
 `https://marketplace.visualstudio.com/`
 
@@ -24,8 +24,8 @@
 
 ![image-20240317211839585](assets/image-20240317211839585-1710681522584-5.png)
 
-### 此处使用`Ubuntu`上的 VSCode，版本`1.87.2`，如上图修改并应用修改，保存。
+### 此处使用`Ubuntu`上的 VSCode，版本`1.87.2`，如上图修改并应用修改，保存
 
-### 重新使用`Install from VSIX`离线安装插件即可。
+### 重新使用`Install from VSIX`离线安装插件即可
 
 ![image-20240317212727014](assets/image-20240317212727014-1710682050120-7.png)
