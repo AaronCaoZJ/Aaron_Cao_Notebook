@@ -39,7 +39,7 @@ OS: Linux x64 5.15.0-100-generic
 
 
 
-## 2. 解压文件并放在 ` .vscode-server ` 目录下
+## 2. 解压文件并放在` .vscode-server `目录下
 
 > 清空原始 vscode-server/bin
 >
