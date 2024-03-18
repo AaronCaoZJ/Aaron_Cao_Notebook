@@ -1,6 +1,6 @@
 ### **by Aaron_Cao_Zhijun 🌳**
 
-<img src="assets/20240315-_ARC5144-编辑-1710754748535-2.jpg" alt="20240315-_ARC5144-编辑" style="zoom:80%;" />
+<img src="assets/20240315-_ARC5144-编辑-1710754748535-2.jpg" alt="20240315-_ARC5144-编辑"  />
 
 > **🏫 Address**
 >
