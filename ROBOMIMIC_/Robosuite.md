@@ -15,6 +15,8 @@
 >
 > *Robosuite 官方文档，`https://robosuite.ai/docs/overview.html`*
 
+
+
 # A. Environments
 
 1. Running Standardized Environments
@@ -88,3 +90,30 @@ while data.time < 1:
 ```
 
 3. 重新自定义现有环境程序
+
+> *ref:*
+>
+> *机器人技能学习-robosuite-0-入门介绍，`https://blog.csdn.net/weixin_42823098/article/details/135201337?spm=1001.2014.3001.5502`*
+
+- 复制`robosuite/robosuite/environments/manipulation`下的操作任务到`My_env`，此处即可尽情修改
+- 修改 `robosuite/robosuite/__init__.py`，添加代码:
+
+```python
+import sys
+sys.path.append("robosuite/robosuite/My_env") 
+
+# Manipulation environments
+from robosuite.environments.manipulation.lift import Lift
+# from robosuite.environments.manipulation.myEnv import MyEnv
+from robosuite.My_env import My_Lift
+```
+
+
+
+# B. Collect Human demonstrations
+
+> *ref:*
+>
+> *机器人技能学习-构建自己的数据集并进行训练，`https://blog.csdn.net/weixin_42823098/article/details/135547162?spm=1001.2014.3001.5502`*
+
+- 数据集保存路径：`robosuite/robosuite/models/assets/demonstrations`
