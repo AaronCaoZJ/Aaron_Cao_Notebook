@@ -6,7 +6,7 @@
 
 ###### *38 Zheda Rd, Hangzhou 310027, P.R. China*
 
->**MAIL 📧**
+>**Mail 📧**
 >
 >*1060919265@qq.com* | 
 >*aaroncaozj@gmail.com* | 
