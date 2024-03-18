@@ -8,17 +8,17 @@
 
 ---
 
->### `MAIL 📧`
+>### MAIL 📧
 >
->##### 1060919265@qq.com
+>`1060919265@qq.com`
 >
->##### aaroncaozj@gmail.com
+>`aaroncaozj@gmail.com`
 >
->##### 3200105612@zju.edu.cn
+>`3200105612@zju.edu.cn`
 
 ---
 
-> ### `Github 🦾`
+> ### Github 🦾
 >
-> ##### https://github.com/AaronCaoZJ
+> `https://github.com/AaronCaoZJ`
 
