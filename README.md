@@ -8,8 +8,8 @@
 
 >**Mail 📧**
 >
->*1060919265@qq.com* | 
->*aaroncaozj@gmail.com* | 
+>*1060919265@qq.com* |  
+>*aaroncaozj@gmail.com* |  
 >*3200105612@zju.edu.cn*
 
 > **Github 🦾**
