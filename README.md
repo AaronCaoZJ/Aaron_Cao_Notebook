@@ -1,18 +1,18 @@
 ### **by Aaron_Cao_Zhijun 🌳**
 
-> **Address 🏫**
+> **🏫 Address**
 >
 > *Zhejiang University, Yuquan Campus*
 >
 > *38 Zheda Rd, Hangzhou 310027, P.R. China*
 
->**Mail 📧**
+>**📧 Mail**
 >
->*1060919265@qq.com* |  
->*aaroncaozj@gmail.com* |  
+>*1060919265@qq.com* | 
+>*aaroncaozj@gmail.com* | 
 >*3200105612@zju.edu.cn*
 
-> **Github 🦾**
+> **🦾 Github**
 >
 > *https://github.com/AaronCaoZJ*
 
