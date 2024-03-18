@@ -6,19 +6,17 @@
 
 ###### *38 Zheda Rd, Hangzhou 310027, P.R. China*
 
----
 
->### MAIL 📧
->
->`1060919265@qq.com`
->
->`aaroncaozj@gmail.com`
->
->`3200105612@zju.edu.cn`
 
----
-
-> ### Github 🦾
+>**MAIL 📧**
 >
-> `https://github.com/AaronCaoZJ`
+>*1060919265@qq.com*
+>
+>*aaroncaozj@gmail.com*
+>
+>*3200105612@zju.edu.cn*
+
+> **Github 🦾**
+>
+> *https://github.com/AaronCaoZJ*
 
