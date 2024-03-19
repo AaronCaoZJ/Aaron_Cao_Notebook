@@ -1,4 +1,4 @@
-# Troubleshooting `ssh` connection issues
+# Troubleshooting ssh connection issues
 
 ## 1. 下载与本地 VSCode 对应的 vscode server
 
@@ -16,7 +16,7 @@ V8: 11.8.172.18-electron.0
 OS: Windows_NT x64 10.0.22000
 ```
 
-#### Download from:
+Download from:
 
 `https://update.code.visualstudio.com/commit:019f4d1419fbc8219a181fab7892ebccf7ee29a2/server-linux-x64/stable`
 
@@ -33,13 +33,13 @@ Node.js: 18.17.1
 V8: 11.8.172.18-electron.0
 OS: Linux x64 5.15.0-100-generic
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#### Download from:
+Download from:
 
 `https://update.code.visualstudio.com/commit:863d2581ecda6849923a2118d93a088b0745d9d6/server-linux-x64/stable`
 
 
 
-## 2. 解压文件并放在` .vscode-server `目录下
+## 2. 解压到 .vscode-server 目录
 
 > 清空原始 vscode-server/bin
 >
