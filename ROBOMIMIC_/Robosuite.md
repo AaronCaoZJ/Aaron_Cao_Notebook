@@ -1,15 +1,16 @@
-# Robosuite v1.4
+| *Robosuite v1.4* |
+| ---------------- |
 
-> `robosuite` is a simulation framework powered by the MuJoCo physics engine for robot learning.
+> *`robosuite` is a simulation framework powered by the MuJoCo physics engine for robot learning.*
 
-> This release of `robosuite` contains `seven robot  models`, `eight gripper models`, `six controller modes`, and `nine  standardized tasks`. It also offers a modular design of APIs for building new environments with procedural generation. We highlight these primary features below:
+> *This release of `robosuite` contains `seven robot  models`, `eight gripper models`, `six controller modes`, and `nine  standardized tasks`. It also offers a modular design of APIs for building new environments with procedural generation. We highlight these primary features below:*
 >
-> - [standardized tasks](https://robosuite.ai/docs/modules/environments.html): a set of standardized manipulation tasks of large diversity and varying complexity and RL benchmarking results for reproducible research;
-> - [procedural generation](https://robosuite.ai/docs/modules/overview.html): modular APIs for programmatically creating new environments and new  tasks as combinations of robot models, arenas, and parameterized 3D  objects;
-> - [controller supports](https://robosuite.ai/docs/modules/controllers.html): a selection of controller types to command the robots, such as  joint-space velocity control, inverse kinematics control, operational  space control, and 3D motion devices for teleoperation;
-> - [multi-modal sensors](https://robosuite.ai/docs/modules/sensors.html): heterogeneous types of sensory signals, including low-level physical states, RGB cameras, depth maps, and proprioception;
-> - [human demonstrations](https://robosuite.ai/docs/algorithms/demonstrations.html): utilities for collecting human demonstrations, replaying demonstration  datasets, and leveraging demonstration data for learning.
-> - [photorealistic rendering](https://robosuite.ai/docs/modules/renderers.html): integration with advanced graphics tools that provide real-time photorealistic renderings of simulated scenes.
+> - *[standardized tasks](https://robosuite.ai/docs/modules/environments.html): a set of standardized manipulation tasks of large diversity and varying complexity and RL benchmarking results for reproducible research;*
+> - *[procedural generation](https://robosuite.ai/docs/modules/overview.html): modular APIs for programmatically creating new environments and new  tasks as combinations of robot models, arenas, and parameterized 3D  objects;*
+> - *[controller supports](https://robosuite.ai/docs/modules/controllers.html): a selection of controller types to command the robots, such as  joint-space velocity control, inverse kinematics control, operational  space control, and 3D motion devices for teleoperation;*
+> - *[multi-modal sensors](https://robosuite.ai/docs/modules/sensors.html): heterogeneous types of sensory signals, including low-level physical states, RGB cameras, depth maps, and proprioception;*
+> - *[human demonstrations](https://robosuite.ai/docs/algorithms/demonstrations.html): utilities for collecting human demonstrations, replaying demonstration  datasets, and leveraging demonstration data for learning.*
+> - *[photorealistic rendering](https://robosuite.ai/docs/modules/renderers.html): integration with advanced graphics tools that provide real-time photorealistic renderings of simulated scenes.*
 
 > *ref:*
 >
@@ -17,9 +18,9 @@
 
 
 
-# A. Environments
+# Environments
 
-1. Running Standardized Environments
+## Running Standardized Environments
 
 ```python
 import numpy as np
@@ -43,7 +44,7 @@ for i in range(1000):
     env.render()  # render on display
 ```
 
-2. Building Your Own Environments
+## Building Your Own Environments
 
 ```python
 # Step 1: Creating the world
@@ -89,14 +90,14 @@ while data.time < 1:
     mujoco.mj_step(model, data)
 ```
 
-3. 重新自定义现有环境程序
+## 重新自定义现有环境程序
 
 > *ref:*
 >
 > *机器人技能学习-robosuite-0-入门介绍，`https://blog.csdn.net/weixin_42823098/article/details/135201337?spm=1001.2014.3001.5502`*
 
-- 复制`robosuite/robosuite/environments/manipulation`下的操作任务到`My_env`，此处即可尽情修改
-- 修改 `robosuite/robosuite/__init__.py`，添加代码:
+- *复制`robosuite/robosuite/environments/manipulation`下的操作任务到`My_env`，此处即可尽情修改*
+- *修改 `robosuite/robosuite/__init__.py`，添加代码:*
 
 ```python
 import sys
@@ -110,10 +111,10 @@ from robosuite.My_env import My_Lift
 
 
 
-# B. Collect Human demonstrations
+# Collect Human demonstrations
 
 > *ref:*
 >
 > *机器人技能学习-构建自己的数据集并进行训练，`https://blog.csdn.net/weixin_42823098/article/details/135547162?spm=1001.2014.3001.5502`*
 
-- 数据集保存路径：`robosuite/robosuite/models/assets/demonstrations`
+- *数据集保存路径：`robosuite/robosuite/models/assets/demonstrations`*

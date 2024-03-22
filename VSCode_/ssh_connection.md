@@ -1,6 +1,6 @@
 # Troubleshooting ssh connection issues
 
-## 1. 下载与本地 VSCode 对应的 vscode server
+## 下载与本地 VSCode 对应的 vscode server
 
 ### Win VSCode
 
@@ -39,7 +39,7 @@ Download from:
 
 
 
-## 2. 解压到 .vscode-server 目录
+## 解压到 .vscode-server 目录
 
 > 清空原始 vscode-server/bin
 >
