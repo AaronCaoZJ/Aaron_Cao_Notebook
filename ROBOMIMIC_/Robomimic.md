@@ -133,3 +133,126 @@ models/                   # saved model checkpoints
 ```bash
 tensorboard --logdir <experiment-log-dir> --bind_all
 ```
+
+
+
+![image-20240323153759033](assets/image-20240323153759033-1711179482895-1.png)
+
+# 算法
+
+## 创建算法
+
+位于`~/robomimic/algo/algo.py`
+
+> *ref：*
+>
+> *`https://robomimic.github.io/docs/tutorials/custom_algorithms.html`*
+
+## BC
+
+### 数据集批处理
+
+获得 obs，goal_obs，期望的 action
+
+```python
+input_batch["obs"] = {k: batch["obs"][k][:, 0, :] for k in batch["obs"]}
+input_batch["goal_obs"] = batch.get("goal_obs", None) # goals may not be present
+input_batch["actions"] = batch["actions"][:, 0, :]
+```
+
+### 损失函数
+
+主要分为三部分： 
+
+1. **l2_loss 和 l1_loss：** 这两个损失函数用于计算预测动作与目标动作之间的均方误差和平滑的 $L_1$ 损失。 
+
+2. **cos_loss：** 这个损失函数是通过余弦相似度计算预测动作和目标动作之间的方向损失。 
+
+3. **action_loss：** ==最终的动作损失是这三个部分损失的加权和==，权重由配置文件中的参数指定。
+
+> `action`是七维的，分别表示 xyz 变化和 rpy 变化。
+>
+> roll、pitch、yaw 分别对应绕 x、y、z 轴按右手系旋转。![1711181346625](assets/1711181346625-1711181360871-4.png)
+
+```python
+losses = OrderedDict()
+a_target = batch["actions"]
+actions = predictions["actions"]
+losses["l2_loss"] = nn.MSELoss()(actions, a_target)
+losses["l1_loss"] = nn.SmoothL1Loss()(actions, a_target)
+# cosine direction loss on eef delta position
+losses["cos_loss"] = LossUtils.cosine_loss(actions[..., :3], a_target[..., :3])
+
+action_losses = [
+    self.algo_config.loss.l2_weight * losses["l2_loss"],
+    self.algo_config.loss.l1_weight * losses["l1_loss"],
+    self.algo_config.loss.cos_weight * losses["cos_loss"],
+]
+action_loss = sum(action_losses)
+losses["action_loss"] = action_loss
+return losses
+```
+
+### 策略网络
+
+`ActorNetwork`类
+
+
+
+# Difussion_Policy
+
+## requirements
+
+```json
+numpy>=1.13.3
+h5py
+psutil
+tqdm
+termcolor
+tensorboard
+tensorboardX
+imageio
+imageio-ffmpeg
+matplotlib
+egl_probe>=1.0.1
+torch
+torchvision
+// new
+diffusers==0.11.1
+```
+
+```bash
+conda install diffusers==0.11.1
+conda install huggingface_hub
+```
+
+## 指数移动平均（Exponential Moving Average，EMA）
+
+一种给予近期数据更高权重的平均方法。
+$$
+v_t=\beta\cdot v_{t-1}+(1-\beta)\cdot \theta_i
+$$
+$v_t$ 表示前 t 条的平均值，$\beta$ 是加权权重值一般是 0.9 - 0.999。
+
+在深度学习优化过程中，$\theta_t$ 是 t 时刻的模型权重中，$v_t$ 是 t 时刻的影子权重，在梯度下降的过程中，会一直维护着这个影子权重，但是这个影子权重并不会参与训练。
+
+> 基本的假设是，模型权重在最后的 n 步内，会在实际的最优点处抖动，所以我们取最后 n 步的平均，能使得模型更加的鲁棒。
+
+当步数较少时，EMA 的计算会有偏差，增加一个偏差修正步骤：
+$$
+v_t=\frac{v_t}{1-\beta^t}
+$$
+显然当 t 很大时，修正近似为 1。
+
+![image-20240324155550371](assets/image-20240324155550371-1711266953954-6.png)
+
+![image-20240324155613638](assets/image-20240324155613638-1711266977085-8.png)
+
+![image-20240324155634272](assets/image-20240324155634272-1711266997756-10.png)
+
+```python
+# IMPORTANT!
+# replace all BatchNorm with GroupNorm to work with EMA
+# performance will tank if you forget to do this!
+obs_encoder = replace_bn_with_gn(obs_encoder)
+```
