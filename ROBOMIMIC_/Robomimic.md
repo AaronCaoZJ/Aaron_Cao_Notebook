@@ -114,7 +114,7 @@ cd <PATH_TO_robomimic_INSTALL_DIRECTORY>/robomimic/scripts
 python train.py --config <path/to/.json>
 ```
 
-## check the training outputs
+## 训练日志、模型和视频
 
 After the script finishes, you can check the training outputs in the `<train.output_dir>/<experiment.name>/<date>` experiment directory:
 
@@ -128,13 +128,26 @@ videos/                   # videos of robot rollouts during training
 models/                   # saved model checkpoints
 ```
 
-- 使用 Tensorboard 查看训练过程
+### Tensorboard
 
 ```bash
 tensorboard --logdir <experiment-log-dir> --bind_all
 ```
 
+### 服务器使用 Tensorboard
 
+1. 将 Tensorboard 的 event 文件保存到`/root/tf-logs/`路径（如果您希望使用其他的 logs 文件夹，请看下方切换目录），或者将保存到其他路径的 event 文件拷贝到该路径下，然后使用 Tensorboard。
+
+   ![image-20240329105318048](assets/image-20240329105318048-1711680800410-1.png)
+
+2. ```bash
+   # 首先结束默认启动的TensorBoard进程
+   ps -ef | grep tensorboard | awk '{print $2}' | xargs kill -9 
+   # 在终端中执行以下命令启动TensorBoard
+   tensorboard --port 6007 --logdir /path/to/your/tf-logs/direction
+   ```
+
+   
 
 ![image-20240323153759033](assets/image-20240323153759033-1711179482895-1.png)
 
@@ -256,3 +269,99 @@ $$
 # performance will tank if you forget to do this!
 obs_encoder = replace_bn_with_gn(obs_encoder)
 ```
+
+
+
+# 0401_汇报
+
+## diffusion_policy 训练
+
+### config
+
+```json
+"train": {
+        "data": "/root/autodl-tmp/ROBOMIMIC_/robomimic/datasets/lift/ph/image_v141.hdf5",      "output_dir":"tmp/core/diffusion_policy/lift/ph/image/trained_models",
+        "num_data_workers": 0,
+        "hdf5_cache_mode": "all",
+        "hdf5_use_swmr": true,
+        "hdf5_load_next_obs": false,
+        "hdf5_normalize_obs": false,
+        "hdf5_filter_key": null,
+        "seq_length": 15,
+        "pad_seq_length": true,
+        "frame_stack": 2,
+        "pad_frame_stack": true,
+        "dataset_keys": [
+            "actions"
+        ],
+        "goal_mode": null,
+        "cuda": true,
+        "batch_size": 256,
+        "num_epochs": 2000,
+        "seed": 1
+    },
+```
+
+```json
+    "algo": {
+        "optim_params": {
+            "policy": {
+                "learning_rate": {
+                    "initial": 0.0001,
+                    "decay_factor": 0.1,
+                    "epoch_schedule": []
+                },
+                "regularization": {
+                    "L2": 0.0
+                }
+            }
+        },
+        "horizon": {
+            "observation_horizon": 2,
+            "action_horizon": 8,
+            "prediction_horizon": 16
+        },
+        "unet": {
+            "enabled": true,
+            "diffusion_step_embed_dim": 256,
+            "down_dims": [256,512,1024],
+            "kernel_size": 5,
+            "n_groups": 8
+        },
+        "ema": {
+            "enabled": true,
+            "power": 0.75
+        },
+        "ddpm": {
+            "enabled": true,
+            "num_train_timesteps": 100,
+            "num_inference_timesteps": 100,
+            "beta_schedule": "squaredcos_cap_v2",
+            "clip_sample": true,
+            "prediction_type": "epsilon"
+        }
+    },
+```
+
+### train_loss
+
+![Train_Loss](assets/Train_Loss-1711682290252-8-1711682293723-10.svg)
+
+epoch > 900 时，loss 大致在 0.0019 到 0.0021 间波动。
+
+### task_rollout
+
+<video src="D:/Folder for ZJU/Folder for Academic/毕业设计/组会汇报/Lift_epoch_1000.mp4"></video>
+
+```
+Epoch 500 Rollouts took 12.730176005363464s (avg) with results:
+Env: Lift
+{
+    "Horizon": 44.46,
+    "Return": 1.0,
+    "Success_Rate": 1.0,
+    "Time_Episode": 10.608480004469554,
+    "time": 12.730176005363464
+}
+```
+
