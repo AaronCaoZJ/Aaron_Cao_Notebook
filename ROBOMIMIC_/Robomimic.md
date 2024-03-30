@@ -151,6 +151,42 @@ tensorboard --logdir <experiment-log-dir> --bind_all
 
 ![image-20240323153759033](assets/image-20240323153759033-1711179482895-1.png)
 
+
+
+# Robomimic v0.1（CoRL 2021）数据集
+
+## `image` 格式数据
+
+在 [v2.0 文档](https://robomimic.github.io/docs/v0.2/datasets/robomimic_v0.1.html)中提供下载。
+
+例如 robomimic 的 tool_hang 环境的 `image` 类型数据 demo_0 中内容如下：
+
+- **`actions`**:`shape (n, 7)`，n 为轨迹长度，7为动作维度
+- **`dones`**:` shape (n, )`，n 为轨迹长度
+- obs
+  - **`agentview_image`**:` shape (n, 256, 256, 3)`，agent 视角图像，分别对应(n, H, W, C)，n 为轨迹长度，H 为图像高，W 为宽，C 为图像通道数，所有图像需为 np.uint8 类型
+  - **`object`**:`shape (n, 44)`，n 为轨迹长度，三个物体 base, frame, tool 的位置，姿态，相对机械臂末端的位置姿态`(pos3, quat4, to_eef_pos3, to_eef_quat4)`，共计 3x14 个值，以及 `frame_is_assembled` 与 `tool_on_frame` 两个布尔值
+  - **`robot0_eef_pos`**:`shape (n, 3)`，机器人末端位置
+  - **`robot0_eef_quat`**: `shape (n, 4)`，机器人末端姿态四元数
+  - **`robot0_eef_vel_ang`**: `shape (n, 3)`，机器人末端角速度
+  - **`robot0_eef_vel_lin`**: `shape (n, 3)`，机器人末端线速度
+  - **`robot0_eye_in_hand_image`**: `shape (n, 256, 256, 3)`，机器人末端相机图像
+  - **`robot0_gripper_qpos`**: `shape (n, 2)`，末端夹爪动作状态，左右两侧
+  - **`robot0_gripper_qvel`**: `shape (n, 2)`，末端夹爪动作速度，左右两侧
+  - **`robot0_joint_pos`**: `shape (n, 7)`，机器人各关节转角
+  - **`robot0_joint_pos_cos`**: `shape (n, 7)`，机器人各关节转角 cos 值
+  - **`robot0_joint_pos_sin`**: `shape (n, 7)`，机器人各关节转角 sin 值
+  - **`robot0_joint_vel`**: `shape (n, 7)`，机器人各关节速度
+  - **`sideview_image`**: `shape (n, 256, 256, 3)`，侧方位相机图像
+- next_obs
+  - 同上
+- **`rewards`**: `shape (n, )`，n 为轨迹长度
+- **`states`**: `shape (n, 58)`，n 为轨迹长度，58 是状态向量的维度，对于非 robosuite 数据集，应该为空
+
+而 `low_dim` 类型的数据集的中内容与 `image` 基本相同，只是 obs 中少了所有的相机数据。
+
+
+
 # 算法
 
 ## 创建算法
@@ -216,7 +252,7 @@ return losses
 
 ## requirements
 
-```json
+```
 numpy>=1.13.3
 h5py
 psutil
@@ -272,9 +308,9 @@ obs_encoder = replace_bn_with_gn(obs_encoder)
 
 
 
-# 0401_汇报
+# 0401_汇报：diffusion_policy 训练
 
-## diffusion_policy 训练
+## Lift
 
 ### config
 
@@ -343,6 +379,60 @@ obs_encoder = replace_bn_with_gn(obs_encoder)
     },
 ```
 
+选用 obs 中的末端执行器摄像头及智能体完整视角作为图像输入。
+
+```json
+"observation": {
+        "modalities": {
+            "obs": {
+                "low_dim": [
+                ],
+                "rgb": [
+                    "agentview_image",
+                    "robot0_eye_in_hand_image"
+                ],
+                "depth": [],
+                "scan": []
+            },
+            "goal": {
+                "low_dim": [],
+                "rgb": [],
+                "depth": [],
+                "scan": []
+            }
+        },
+```
+
+rgb encoder
+
+```json
+"rgb": {
+                "core_class": "VisualCore",
+                "core_kwargs": {
+                    "feature_dimension": 64,
+                    "backbone_class": "ResNet18Conv",
+                    "backbone_kwargs": {
+                        "pretrained": false,
+                        "input_coord_conv": false
+                    },
+                    "pool_class": "SpatialSoftmax",
+                    "pool_kwargs": {
+                        "num_kp": 32,
+                        "learnable_temperature": false,
+                        "temperature": 1.0,
+                        "noise_std": 0.0
+                    }
+                },
+                "obs_randomizer_class": "CropRandomizer",
+                "obs_randomizer_kwargs": {
+                    "crop_height": 76,
+                    "crop_width": 76,
+                    "num_crops": 1,
+                    "pos_enc": false
+                }
+            },
+```
+
 ### train_loss
 
 ![Train_Loss](assets/Train_Loss-1711682290252-8-1711682293723-10.svg)
@@ -365,3 +455,36 @@ Env: Lift
 }
 ```
 
+## Square
+
+### train_loss
+
+![Train_Loss](assets/Train_Loss-1711814920669-1-1711814923843-3.svg)
+
+训练到 epoch = 650，loss 似乎还有下降趋势，根据官方 benchmarks `num_epoch` 一般在 2000
+
+已花费24h+，==考虑调整初始学习率等方法加速学习==
+
+### task_rollout
+
+1. epoch_50
+
+<video src="D:/Folder for ZJU/Folder for Academic/毕业设计/组会汇报/NutAssemblySquare_epoch_50.mp4"></video>
+
+2. epoch_600
+
+<video src="D:/Folder for ZJU/Folder for Academic/毕业设计/组会汇报/NutAssemblySquare_epoch_600.mp4"></video>
+
+### success_rate
+
+![Rollout_Success_Rate_NutAssemblySquare-mean](assets/Rollout_Success_Rate_NutAssemblySquare-mean.svg)
+
+在该任务下，官方 benchmark，即 bc_rnn 的最佳实践：
+
+![image-20240331001908492](assets/image-20240331001908492-1711815551750-6.png)
+
+## 难点
+
+1. 创建自己的更符合“家居”环境的任务环境收集数据集效率低，尝试寻找已经打包好的其他数据集，在 robomimic 中测试，实在没找到自行收集人为数据
+
+2. 加速模型训练，了解示教的欠佳数据是否影响训练
