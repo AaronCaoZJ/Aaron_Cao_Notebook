@@ -865,6 +865,22 @@ Average Rollout Stats
 }
 ```
 
+## Pretrained bc_rnn
+
+```bash
+Average Rollout Stats
+{
+    "Return": 0.8,
+    "Horizon": 190.68,
+    "Success_Rate": 0.8,
+    "Exception_Rate": 0.0,
+    "time": 157.23113009929656,
+    "Num_Success": 40.0,
+    "Time_Episode": 131.02594174941382,
+    "Num_Episode": 50
+}
+```
+
 ### discuss
 
 ![image-20240421113716614](assets/image-20240421113716614.png)
