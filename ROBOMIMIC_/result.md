@@ -1,3 +1,31 @@
+# Train Results
+
+## dp_mug_d0
+
+![image-20240425010550635](assets/image-20240425010550635-1713978353893-9.png)
+
+<video src="G:/毕业设计/result/dp_mug_d0/videos/MugCleanup_D0_epoch_1300.mp4"></video>
+
+## dp_square_d0
+
+![image-20240425010944760](assets/image-20240425010944760-1713978587215-11-1713979100983-19-1713979103375-21.png)
+
+<video src="G:/毕业设计/result/dp_square_d0/videos/NutAssemblySquare_epoch_1550.mp4"></video>
+
+## dp_square_d1
+
+### epoch_450_success_0.7 (extra_inference_step)
+
+![image-20240425011259083](assets/image-20240425011259083-1713979090315-15-1713979092915-17.png)
+
+<video src="G:/毕业设计/result/dp_square_d1/epoch_450_success_0.7/videos/Square_D1_epoch_450.mp4"></video>
+
+### epoch_1100_success_0.6
+
+![image-20240425011753549](assets/image-20240425011753549-1713979077005-13.png)
+
+
+
 # Rollout Experiments
 
 ## Config
