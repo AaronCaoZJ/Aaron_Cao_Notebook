@@ -909,6 +909,22 @@ Average Rollout Stats
 }
 ```
 
+## setup time
+
+```bash
+Average Rollout Stats
+{
+    "Return": 0.0,
+    "Horizon": 1.0,
+    "Success_Rate": 0.0,
+    "Exception_Rate": 0.0,
+    "time": 12.214613084793092,
+    "Num_Success": 0.0,
+    "Time_Episode": 10.178844237327576,
+    "Num_Episode": 50
+}
+```
+
 ### discuss
 
 ![image-20240421113716614](assets/image-20240421113716614.png)
