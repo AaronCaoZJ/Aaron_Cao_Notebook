@@ -4,13 +4,7 @@
 
 >**📧 Mail**
 >
->*aaroncaozj@gmail.com* | 
->
->*e1520009@u.nus.edu* | 
->
->*aaron_caozj@zju.edu.cn* | 
->
->*1060919265@qq.com*
+>*aaroncaozj@gmail.com* | *e1520009@u.nus.edu* | *aaron_caozj@zju.edu.cn* | *1060919265@qq.com*
 
 > 👨‍💻 Linkedin
 >
