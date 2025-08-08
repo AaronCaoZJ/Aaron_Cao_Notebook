@@ -1,18 +1,20 @@
 ### **by Aaron_Cao_Zhijun 🌳**
 
-<img src="assets/20240315-_ARC5144-编辑-1710754748535-2.jpg" alt="20240315-_ARC5144-编辑"  />
-
-> **🏫 Address**
->
-> *Zhejiang University, Yuquan Campus*
->
-> *38 Zheda Rd, Hangzhou 310027, P.R. China*
+![20240403-_ARC6389](assets/20240403-_ARC6389.jpg)
 
 >**📧 Mail**
 >
->*1060919265@qq.com* | 
 >*aaroncaozj@gmail.com* | 
->*3200105612@zju.edu.cn*
+>
+>*e1520009@u.nus.edu* | 
+>
+>*aaron_caozj@zju.edu.cn* | 
+>
+>*1060919265@qq.com*
+
+> 👨‍💻 Linkedin
+>
+> *www.linkedin.com/in/aaron-cao-zhijun*
 
 > **🦾 Github**
 >
