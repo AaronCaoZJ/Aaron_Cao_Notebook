@@ -6,6 +6,10 @@
 
 
 
+---
+
+
+
 # Background
 
 ## Vison Transformer - ViT
@@ -52,20 +56,18 @@ $$
 
 
 
-# VLM（多模态模型/视觉语言模型）
-
 常见模型架构是`视觉编码器`+`映射层`+`LLM`，如VILA-1.5，LLaVA，QWen-VL等
 
-## LLaVA系列
+# LLaVA系列
 
-### LLaVA
+## LLaVA
 
 ![image-20250805145302352](assets/image-20250805145302352.png)
 $$
 H_V=W \cdot Z_V,\ where\ Z_V=g(X_V)
 $$
 
-#### Architecture
+### Architecture
 
 预训练CLIP模型的视觉编码器`ViT-L/14`+`线性映射层`+`LLama or Vicuna(基于LLama2微调)`
 
@@ -77,14 +79,14 @@ $$
 >
 > `ViT-L/14`表示ViT会将图像分割成14x14的patch
 
-#### Training
+### Training
 
 1. 图像和语言特征对齐：冻结Vision Encoder和LLM，预训练Projection权重
 2. 指令微调：使用ChatGPT生成的具有上下文的数据ScienceQA数据集，微调投影矩阵和LLM
 
-### LLaVA-1.5-HD
+## LLaVA-1.5-HD
 
-#### Improvements vs LLaVA
+### Improvements vs LLaVA
 
 1. 使用2层的线性投影层
 2. 输入图像的分辨率从224x224提高到336x336（CLIP支持的分辨率上限）
@@ -93,25 +95,27 @@ $$
 4. 对于期望回答的长短进行明确的指令提示
 5. 使用更多样化数据集训练
 
-#### Experiment
+### Experiment
 
 * LLaVA-1.5预训练和训练数据量小，但效果更好
 
 * 提升分辨率有助于模型减少幻觉
 
-### LLaVA-NeXT/1.6
+## LLaVA-NeXT/1.6
 
 支持更大更多种分辨率
 
-### LLaVA-OneVision
+## LLaVA-OneVision
 
-#### Improvements
+### Improvements
 
 1. 更多样化数据（>1M）~9M
 2. 训练中第一、二步之间使用高质量的新数据微调模型，并在第二步中依此使用单个图片、视频、多图片上指令微调
 3. 使用插值方式减少高清图像、多帧视频的token数量
 
-## Show-o
+
+
+# Show-o
 
 ![image-20250805175558063](assets/image-20250805175558063.png)
 
@@ -121,7 +125,7 @@ $$
 >
 > 相比于使用额外的Diffusion模块，使用一个Transformer融合自回归建模和扩散模型。
 
-### Tokenization
+## Tokenization
 
 * Text tokenizer：直接使用pre-trained LLM
 
@@ -129,24 +133,24 @@ $$
 
   ![image-20250805220754732](assets/image-20250805220754732.png)
 
-### Architecture
+## Architecture
 
 继承常规的LLM结构，关键调整包括：
 
 1. 在每个注意力层前增加`QK-Norm`操作
 2. 在原有文本token的嵌入层基础上扩展了8192个可学习嵌入，用于离散的图像token
 
-### Unified Prompting
+## Unified Prompting
 
 ![image-20250806003901550](assets/image-20250806003901550.png)
 
-### Omni-Attention Mechanism
+## Omni-Attention Mechanism
 
 对于文本使用因果注意力，对于图像使用全注意力
 
 ![image-20250806010304316](assets/image-20250806010304316.png)
 
-### Training Objectives
+## Training Objectives
 
 为同时实现自回归建模和离散扩散建模，需要两个训练目标：
 
@@ -165,79 +169,6 @@ $$
 
 最终的损失函数是两者的加权和
 
-### Training Pipeline
+## Training Pipeline
 
 ![image-20250808014532242](assets/image-20250808014532242.png)
-
-
-
-# What matters in building VLAs
-
-## Why do we prefer VLAs?
-
-1. VLAs是否是构建通用机器人策略的合适选择？
-
-   视觉 - 语言 - 动作模型（VLA）是实现通用机器人策略的一条有前景的路径。
-
-2. 基于RoboVLMs构建的最佳VLA在现实场景中的表现如何？
-
-   利用 RoboVLMs 构建的最佳配置的视觉 - 语言 - 动作模型（VLA）在现实世界场景中表现出强大的有效性和鲁棒性。
-
-## Which VLM backbone is more suitable for VLAs?
-
-1. 哪种类型的VLMs更适合构建VLAs？
-
-   在大规模视觉 - 语言数据集上进行充分视觉 - 语言预训练的模型有利于视觉 - 语言 - 动作模型（VLAs）。
-
-## How should we formulate VLAs?
-
-1. 性能最佳的VLA结构是什么？
-
-   具有策略头以整合历史信息的连续动作空间是最佳结构。
-
-2. 不同的结构形式对VLAs的泛化能力和数据效率有何影响？
-
-   采用单独策略头进行历史融合的 KosMos 骨干网络在泛化能力和数据效率方面表现最佳。
-
-## When should we leverage cross-embodiment datasets? 
-
-1. 大规模跨实体数据集对VLAs有何贡献？
-
-   额外的域内数据是有益的；在（跨实体）预训练后进行微调（post-training）能进一步提高整体性能以及少样本性能。
-
-
-
-# Unified World Models
-
-## Problem Setup & Flexible Inference
-
-构建一个统一的`Diffusion`模型，同时建模以下四个分布，可以自然的构建一个联合噪声预测网络，来估计$\mathbb{E}[\epsilon_a,\epsilon_{o’}|o,a_t,o_t']$，但是动作和未来的观测与同一个t耦合，只能采样联合分布
-
-| 任务           | 目标分布    | 时间步设置              | 采样流程                                                     |
-| -------------- | ----------- | ----------------------- | ------------------------------------------------------------ |
-| 策略           | $p(a|o)$    | $t_{o'}=T$              | 固定未来观测为噪声，对动作执行反向扩散$t_a=T:1$              |
-| 视频预测       | $p(o'|o)$   | $t_a=T$                 | 固定动作为噪声，对未来观测执行反向扩散$t_{o'}=T:1$           |
-| 正动力学       | $p(o'|o,a)$ | $t_a=0$                 | 即已知当前动作和当前观测，预测接下来观测会变成什么样，固定动作为真实值，对未来观测执行反向扩散$t_{o'}=T:1$ |
-| 逆动力学       | $p(a|o,o')$ | $t_{o'}=0$              | 即已知当前观测和接下来的观测，预测中间动作，固定未来观测为真实值，对动作执行反向扩散$t_a=T:1$ |
-| 无条件视频预测 | $p(o'|o)$   | $t_a=T,o=\mathrm{NULL}$ | 无当前观测，动作为噪声，对未来观测执行反向扩散$t_{o'}=T:1$   |
-
-## Architecture
-
-Diffusion Transformer即传统U-Net替换为ViT
-
-### 输入编码
-
-1. 当前观测o，经ResBet-18编码
-2. 噪声动作，经MLP编码动作片段为固定维度的嵌入
-3. 噪声观测，经SDXL VAE压缩到潜在空间，分块，展平
-4. 扩散步，通过正弦位置编码
-
-### UWM Blk
-
-![image-20250808161748069](assets/image-20250808161748069.png)
-
-### 输出解码
-
-1. 若输入为带噪动作，输出为动作噪声预测
-
-2. 若输入为带噪观测，输出为观测噪声预测
